@@ -23,4 +23,7 @@ project(jlox VERSION 1.0.0)
 
 # Generate the application executable
 add_executable( lox 
-src/main.cpp )
+src/main.cpp
+src/lox.cpp
+src/token.cpp
+src/scanner.cpp )
