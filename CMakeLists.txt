@@ -18,7 +18,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CLANG_COMPILE_FLAGS}")
 
 
 # Name of the project 
-project(jlox VERSION 1.0.0)
+project(lox VERSION 1.0.0)
 
 
 # Generate the application executable
