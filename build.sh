@@ -1,4 +1,4 @@
-cmake -Wdev -Wdeprecated -S $(pwd) -B "$(pwd)/build"
+cmake -Wdev -Wdeprecated -S $(pwd) -B "$(pwd)/build" -DCMAKE_BUILD_TYPE=Debug
 
 
 if [[ $? -eq 0 ]]
