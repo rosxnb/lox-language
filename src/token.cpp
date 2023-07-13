@@ -1,7 +1,7 @@
 #include "token.hpp"
 
-Token::Token(TokenType ttype, std::string lexeme, std::string literal, size_t line)
-    : m_ttype(ttype), m_lexeme(lexeme), m_literal(literal), m_line(line)
+Token::Token(TokenType ttype, std::string lexeme, std::string literal)
+    : m_ttype(ttype), m_lexeme(lexeme), m_literal(literal)
 {}
 
 std::string Token::to_string() const

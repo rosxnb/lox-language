@@ -12,7 +12,7 @@ std::vector<Token> Scanner::generate_tokens()
         scan_token();
     }
 
-    m_tokens.emplace_back( TokenType::EOFT, "", "", m_line );
+    m_tokens.emplace_back( TokenType::EOFT, "", "" );
     return m_tokens;
 }
 
@@ -54,6 +54,7 @@ void Scanner::scan_token()
         case '\t':
         case '\r': break;
         case '\n': m_line++; break;
+        case '"': consume_string(); break;
         default:
             if (is_digit(c)) {
                 consume_number();
@@ -67,8 +68,8 @@ void Scanner::scan_token()
 
 void Scanner::add_token(TokenType type, std::string literal)
 {
-    std::string text = m_source.substr(m_start, m_current);
-    m_tokens.emplace_back( type, text, literal, m_line );
+    std::string text = m_source.substr(m_start, m_current - m_start);
+    m_tokens.emplace_back( type, text, literal );
 }
 
 char Scanner::advance()
@@ -99,7 +100,7 @@ void Scanner::consume_number()
             advance();
     }
 
-    add_token(TokenType::NUMBER, m_source.substr(m_start, m_current));
+    add_token(TokenType::NUMBER, m_source.substr(m_start, m_current - m_start));
 }
 
 void Scanner::consume_identifier()
@@ -108,7 +109,7 @@ void Scanner::consume_identifier()
         advance();
 
     // check if it is reserved keyword
-    std::string text = m_source.substr(m_start, m_current);
+    std::string text = m_source.substr(m_start, m_current - m_start);
     TokenType type   = 
         keywords.find(text) != keywords.end() ?
         keywords[text] : TokenType::IDENTIFIER;
@@ -116,7 +117,7 @@ void Scanner::consume_identifier()
     add_token(type);
 }
 
-void Scanner::string()
+void Scanner::consume_string()
 {
     while (peek() != '"' && !is_end()) {
         if (peek() == '\n') m_line++;
@@ -130,7 +131,7 @@ void Scanner::string()
 
     advance();
 
-    std::string value = m_source.substr(m_start + 1, m_current);
+    std::string value = m_source.substr(m_start + 1, m_current - m_start - 2);
     add_token(TokenType::STRING, value);
 }
 
@@ -155,7 +156,7 @@ bool Scanner::is_end() const
 
 bool Scanner::is_digit(char c) const
 {
-    return c >= '0' || c <= '9';
+    return c >= '0' && c <= '9';
 }
 
 bool Scanner::is_alpha(char c) const
@@ -169,20 +170,20 @@ bool Scanner::is_alpha_numeric(char c) const
 }
 
 std::unordered_map<std::string, TokenType> Scanner::keywords = {
-    {"and", TokenType::AND},
-    {"class", TokenType::AND},
-    {"else", TokenType::AND},
-    {"false", TokenType::AND},
-    {"for", TokenType::AND},
-    {"fun", TokenType::AND},
-    {"if", TokenType::AND},
-    {"nil", TokenType::AND},
-    {"or", TokenType::AND},
-    {"print", TokenType::AND},
-    {"return", TokenType::AND},
-    {"super", TokenType::AND},
-    {"this", TokenType::AND},
-    {"true", TokenType::AND},
-    {"var", TokenType::AND},
-    {"while", TokenType::AND},
+    {   "and",     TokenType::AND       },
+    {   "class",   TokenType::CLASS     },
+    {   "else",    TokenType::ELSE      },
+    {   "false",   TokenType::FALSE     },
+    {   "for",     TokenType::FOR       },
+    {   "fun",     TokenType::FUN       },
+    {   "if",      TokenType::IF        },
+    {   "nil",     TokenType::NIL       },
+    {   "or",      TokenType::OR        },
+    {   "print",   TokenType::PRINT     },
+    {   "return",  TokenType::RETURN    },
+    {   "super",   TokenType::SUPER     },
+    {   "this",    TokenType::THIS      },
+    {   "true",    TokenType::TRUE      },
+    {   "var",     TokenType::VAR       },
+    {   "while",   TokenType::WHILE     },
 };

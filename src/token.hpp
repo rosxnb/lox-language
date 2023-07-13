@@ -31,7 +31,7 @@ std::string operator +(const TokenType token, const std::string& str);
 class Token
 {
     public:
-        Token(TokenType ttype, std::string lexeme, std::string literal, size_t line);
+        Token(TokenType ttype, std::string lexeme, std::string literal);
         std::string to_string() const;
         friend std::ostream& operator <<(std::ostream& print, const Token& token);
 
@@ -39,7 +39,6 @@ class Token
         TokenType           m_ttype;
         std::string         m_lexeme;
         std::string         m_literal;
-        size_t              m_line;
 };
 
 #endif // TOKEN_HPP
