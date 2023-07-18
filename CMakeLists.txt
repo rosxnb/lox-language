@@ -7,8 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 # Compiler variable (locally defined)
-# set(CLANG_LINKER_FLAGS "-Llibglfw.3.3.dylib")
-set(CLANG_COMPILE_FLAGS "-Wno-deprecated -Wall")
+set(CLANG_COMPILE_FLAGS "-Wno-deprecated -Wall -Wshadow")
 
 
 set(CMAKE_C_COMPILER clang)
@@ -22,7 +21,7 @@ project(lox VERSION 1.0.0)
 
 
 # Generate the application executable
-add_executable( lox 
+add_executable( ${PROJECT_NAME}
 src/main.cpp
 src/lox.cpp
 src/token.cpp

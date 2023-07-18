@@ -46,6 +46,9 @@ void Scanner::scan_token()
             if (match('/')) {
                 while (peek() != '\n' && !is_end())
                     advance();
+            }
+            else if (match('*')) {
+                consume_block_comment();
             } else {
                 add_token(TokenType::SLASH);
             }
@@ -133,6 +136,17 @@ void Scanner::consume_string()
 
     std::string value = m_source.substr(m_start + 1, m_current - m_start - 2);
     add_token(TokenType::STRING, value);
+}
+
+void Scanner::consume_block_comment()
+{
+    while (peek() != '*' && peek_next() != '/')
+    {
+        if (peek() == '\n')
+            m_line++;
+        advance();
+    }
+    m_current += 2;     // ignore last two closing char of block comment
 }
 
 char Scanner::peek() const

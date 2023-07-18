@@ -19,6 +19,7 @@ class Scanner
         char advance();
         void add_token(TokenType type, std::string literal = "");
         void consume_string();
+        void consume_block_comment();
         char peek() const;
         char peek_next() const;
         bool is_end() const;
