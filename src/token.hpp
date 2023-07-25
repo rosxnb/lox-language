@@ -28,14 +28,14 @@ enum class TokenType
 std::string operator +(const TokenType token, const std::string& str);
 
 
-class Token
+struct Token
 {
     public:
         Token(TokenType ttype, std::string lexeme, std::string literal);
         std::string to_string() const;
         friend std::ostream& operator <<(std::ostream& print, const Token& token);
 
-    private:
+    public:
         TokenType           m_ttype;
         std::string         m_lexeme;
         std::string         m_literal;

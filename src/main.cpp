@@ -1,8 +1,13 @@
 #include <iostream>
 #include "lox.hpp"
+#include "ast_printer.hpp"
 
 int main(int argc, char** argv)
 {
+    AstPrinter obj;
+    obj.run();
+    return 0;
+
     if (argc > 2) {
         std::cerr << "Useage:\n"
                   << "  lox [file]\n"
