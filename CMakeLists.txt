@@ -25,4 +25,5 @@ add_executable( ${PROJECT_NAME}
 src/main.cpp
 src/lox.cpp
 src/token.cpp
-src/scanner.cpp )
+src/scanner.cpp
+src/parser.cpp )

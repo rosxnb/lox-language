@@ -1,12 +1,37 @@
 #include "token.hpp"
 
-Token::Token(TokenType ttype, std::string lexeme, std::string literal)
+Token::Token(TokenType ttype, std::string lexeme, std::any literal)
     : m_ttype(ttype), m_lexeme(lexeme), m_literal(literal)
 {}
 
 std::string Token::to_string() const
 {
-    return m_ttype + " " + m_lexeme + " " + m_literal;
+    return m_ttype + " " + m_lexeme + " " + any_to_str(m_literal);
+}
+
+std::string Token::any_to_str(std::any const& obj)
+{
+    if (!obj.has_value())
+        return {};
+
+    std::stringstream ss;
+
+    if ( obj.type() == typeid(std::string) )
+        ss << std::any_cast<std::string>(obj);
+    else if ( obj.type() == typeid(const char*) )
+        ss << std::any_cast<const char*>(obj);
+    else
+        // ( obj.type() == typeid(double) || obj.type() == typeid(float) || 
+        //   obj.type() == typeid(int) || obj.type() == typeid(long) )
+        ss << std::any_cast<double>(obj);
+
+    return ss.str();
+}
+
+std::ostream& operator <<(std::ostream& print, const Token& token)
+{
+    print << token.to_string();
+    return print;
 }
 
 std::string operator +(const TokenType token, const std::string& str)
@@ -137,10 +162,4 @@ std::string operator +(const TokenType token, const std::string& str)
     }
 
     return str_token + str;
-}
-
-std::ostream& operator <<(std::ostream& print, const Token& token)
-{
-    print << token.to_string();
-    return print;
 }

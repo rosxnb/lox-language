@@ -4,9 +4,9 @@
 
 int main(int argc, char** argv)
 {
-    AstPrinter obj;
-    obj.run();
-    return 0;
+    // AstPrinter obj;
+    // obj.run();
+    // return 0;
 
     if (argc > 2) {
         std::cerr << "Useage:\n"

@@ -34,10 +34,10 @@ class Expr
 class Binary : public Expr
 {
     template <typename T>
-    using u_ptr = std::unique_ptr<T>;
+    using UniquePtr = std::unique_ptr<T>;
 
     public:
-        Binary(u_ptr<Expr> left, Token oper, u_ptr<Expr> right)
+        Binary(UniquePtr<Expr> left, Token oper, UniquePtr<Expr> right)
             : m_left{ std::move(left) }, m_operator{ oper }, m_right{ std::move(right) }
         {}
 
@@ -47,19 +47,19 @@ class Binary : public Expr
         }
 
     public:
-        u_ptr<Expr> m_left;
+        UniquePtr<Expr> m_left;
         Token   m_operator;
-        u_ptr<Expr> m_right;
+        UniquePtr<Expr> m_right;
 };
 
 class Grouping : public Expr
 {
     template <typename T>
-    using u_ptr = std::unique_ptr<T>;
+    using UniquePtr = std::unique_ptr<T>;
 
     public:
-        Grouping(u_ptr<Expr> expr)
-            :m_expression{ expr.release() }
+        Grouping(UniquePtr<Expr> expr)
+            :m_expression{ std::move(expr) }
         {}
 
         std::any accept(Visitor* v) const override
@@ -68,13 +68,13 @@ class Grouping : public Expr
         }
 
     public:
-        u_ptr<Expr>  m_expression;
+        UniquePtr<Expr>  m_expression;
 };
 
 class Literal : public Expr
 {
     public:
-        Literal(std::string obj)
+        Literal(std::any obj)
             :m_value{ obj }
         {}
 
@@ -84,17 +84,17 @@ class Literal : public Expr
         }
 
     public:
-        std::string m_value;
+        std::any m_value;
 };
 
 class Unary : public Expr
 {
     template <typename T>
-    using u_ptr = std::unique_ptr<T>;
+    using UniquePtr = std::unique_ptr<T>;
 
     public:
-        Unary(Token oper, u_ptr<Expr> expr)
-            : m_operator{ oper }, m_expression{ expr.release() }
+        Unary(Token oper, UniquePtr<Expr> expr)
+            : m_operator{ oper }, m_expression{ std::move(expr) }
         {}
 
         std::any accept(Visitor* v) const override
@@ -104,7 +104,7 @@ class Unary : public Expr
 
     public:
         Token m_operator;
-        u_ptr<Expr>  m_expression;
+        UniquePtr<Expr>  m_expression;
 };
 
 #endif // AST_HPP

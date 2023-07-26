@@ -13,19 +13,19 @@ class Scanner
 
     private:
         void scan_token();
-        bool match(char expected);
+        bool match(char);
         void consume_number();
         void consume_identifier();
         char advance();
-        void add_token(TokenType type, std::string literal = "");
+        void add_token(TokenType, std::any = {});
         void consume_string();
         void consume_block_comment();
         char peek() const;
         char peek_next() const;
         bool is_end() const;
-        bool is_digit(char c) const;
-        bool is_alpha(char c) const;
-        bool is_alpha_numeric(char c) const;
+        bool is_digit(char) const;
+        bool is_alpha(char) const;
+        bool is_alpha_numeric(char) const;
 
 
     private:

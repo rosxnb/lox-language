@@ -69,10 +69,9 @@ void Scanner::scan_token()
     }
 }
 
-void Scanner::add_token(TokenType type, std::string literal)
+void Scanner::add_token(TokenType type, std::any literal)
 {
-    std::string text = m_source.substr(m_start, m_current - m_start);
-    m_tokens.emplace_back( type, text, literal );
+    m_tokens.emplace_back( type, Token::any_to_str(literal), literal );
 }
 
 char Scanner::advance()
@@ -103,7 +102,7 @@ void Scanner::consume_number()
             advance();
     }
 
-    add_token(TokenType::NUMBER, m_source.substr(m_start, m_current - m_start));
+    add_token(TokenType::NUMBER, std::stod(m_source.substr(m_start, m_current - m_start)));
 }
 
 void Scanner::consume_identifier()
